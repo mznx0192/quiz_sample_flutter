@@ -14,6 +14,7 @@ class CandWidget extends StatefulWidget {
       required this.text,
       required this.answerState});
 
+  @override
   _CandWidgetState createState() => _CandWidgetState();
 }
 

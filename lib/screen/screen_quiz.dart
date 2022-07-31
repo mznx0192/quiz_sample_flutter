@@ -1,7 +1,10 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:quiz_app_test/model/model_quiz.dart';
+import 'package:quiz_app_test/screen/screen_result.dart';
 import 'package:quiz_app_test/widget/widget_candidate.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -13,10 +16,10 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  List<int> _answers = [-1, -1, -1];
+  final List<int> _answers = [-1, -1, -1];
   List<bool> _answerState = [false, false, false, false];
   int _currentIndex = 0;
-  SwiperController _controller = SwiperController();
+  final SwiperController _controller = SwiperController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class _QuizScreenState extends State<QuizScreen> {
               height: height * 0.5,
               child: Swiper(
                   controller: _controller,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   loop: false,
                   itemCount: widget.quizs.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -57,7 +60,7 @@ class _QuizScreenState extends State<QuizScreen> {
           Container(
             padding: EdgeInsets.fromLTRB(0, width * 0.024, 0, width * 0.024),
             child: Text(
-              "Q" + (_currentIndex + 1).toString() + '.',
+              'Q ${(_currentIndex + 1).toString()} .',
               style: TextStyle(
                   fontSize: width * 0.06, fontWeight: FontWeight.bold),
             ),
@@ -84,19 +87,25 @@ class _QuizScreenState extends State<QuizScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: ElevatedButton(
-                  child: _currentIndex == widget.quizs.length - 1
-                      ? const Text("결과 보기")
-                      : const Text("다음 문제"),
                   onPressed: _answers[_currentIndex] == -1
                       ? null
                       : () {
                           if (_currentIndex == widget.quizs.length - 1) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResultScreen(
+                                        answers: _answers,
+                                        quizs: widget.quizs)));
                           } else {
                             _answerState = [false, false, false, false];
                             _currentIndex += 1;
                             _controller.next();
                           }
                         },
+                  child: _currentIndex == widget.quizs.length - 1
+                      ? const Text("결과 보기")
+                      : const Text("다음 문제"),
                 ),
               ),
             ),
@@ -107,10 +116,10 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   List<Widget> _buildCandidates(double width, Quiz quiz) {
-    List<Widget> _children = [];
+    List<Widget> children = [];
 
     for (int i = 0; i < 4; i++) {
-      _children.add(CandWidget(
+      children.add(CandWidget(
         index: i,
         text: quiz.candidates[i],
         width: width,
@@ -128,9 +137,9 @@ class _QuizScreenState extends State<QuizScreen> {
           });
         },
       ));
-      _children.add(Padding(padding: EdgeInsets.all(width * 0.024)));
+      children.add(Padding(padding: EdgeInsets.all(width * 0.024)));
     }
 
-    return _children;
+    return children;
   }
 }
