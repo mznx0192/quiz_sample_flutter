@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app_test/model/model_quiz.dart';
+import 'package:quiz_app_test/screen/screen_quiz.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -71,7 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.deepPurple,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      QuizScreen(quizs: quizs)));
+                        },
                       ),
                     )),
                   )

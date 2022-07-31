@@ -3,7 +3,7 @@ import 'package:quiz_app_test/model/model_quiz.dart';
 
 class QuizScreen extends StatefulWidget {
   List<Quiz> quizs;
-  QuizScreen({this.quizs});
+  QuizScreen({required this.quizs});
 
   @override
   _QuizScreenState createState() => _QuizScreenState();
